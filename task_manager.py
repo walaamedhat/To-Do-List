@@ -34,7 +34,7 @@ def list_tasks():
     pass
 
 
-# ToDo => Function to edit a task's description
-def edit_task(task_id, new_description):
+# ToDo => Function to edit a task
+def edit_task(task_id, field, new_value):
     # write your code here
     pass

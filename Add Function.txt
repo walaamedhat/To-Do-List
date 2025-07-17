@@ -1,0 +1,23 @@
+tasks = []
+
+REQUIRED_FIELDS = ["task_id", "title", "priority", "status"]
+VALID_PRIORITIES = ["Low", "Medium", "High"]
+VALID_STATUSES = ["To Do", "In Progress", "Done"]
+
+def add_task(task):
+    for field in REQUIRED_FIELDS:
+        if field not in task:
+            raise ValueError(f"Missing required field: {field}")
+
+    for existing_task in tasks:
+        if existing_task["task_id"] == task["task_id"]:
+            raise ValueError(f"Task ID {task['task_id']} already exists.")
+
+    if task["priority"] not in VALID_PRIORITIES:
+        raise ValueError(f"Invalid priority: {task['priority']}. Must be one of {VALID_PRIORITIES}")
+
+    if task["status"] not in VALID_STATUSES:
+        raise ValueError(f"Invalid status: {task['status']}. Must be one of {VALID_STATUSES}")
+
+    tasks.append(task)
+    print(f"Task '{task['title']}' added successfully!")

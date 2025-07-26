@@ -57,3 +57,6 @@ class TaskManager:
     def edit_task(self, task_id, field, new_value):
         # write your code here
         pass
+
+    def build_GUI(self, gui):
+        pass

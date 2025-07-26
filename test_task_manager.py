@@ -5,5 +5,3 @@ def test_add_task():
     task = {"title": "Hit the gym", "priority": "High", "status": "To Do", "description": "Leg day"}
     add_task(task)
     assert tasks[0] == task
-
-g

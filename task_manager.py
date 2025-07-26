@@ -26,7 +26,6 @@ class TaskManager:
         }
         self.tasks.append(task)
         self._next_id += 1
-        # pass
 
     def get_tasks(self):
         return self.tasks

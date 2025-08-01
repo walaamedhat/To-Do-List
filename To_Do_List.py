@@ -53,15 +53,15 @@ class TaskManager:
         self.tasks.clear()
         self._next_id = 1
 
-    # ToDo => Function to remove a task by ID
+        # ToDo => Function to remove a task by ID
     def remove_task(self, task_id):
         # write your code here
         for task in self.tasks:
             if task["id"] == task_id:
                 self.tasks.remove(task)
-            print(f"Task with ID {task_id} removed successfully!")
+            print(f"Task with ID {task_id} has been removed successfully!")
             return
-        raise ValueError(f"Task with ID {task_id} not found.")
+        raise ValueError(f"Task with ID {task_id} not found!.")
 
         pass
 

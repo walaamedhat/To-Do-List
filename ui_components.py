@@ -96,7 +96,8 @@ class TaskListUI:
             self.refresh_task_list()
 
     def delete_task(self, task_id):
-        self.task_manager.delete_task(task_id)
+        print(task_id, 'remove id')
+        self.task_manager.remove_task(task_id)
         self.refresh_task_list()
 
     def move_task(self, task_id, new_status):

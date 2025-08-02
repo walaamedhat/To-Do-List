@@ -1,7 +1,7 @@
 # task_manager.py
 
 # ToDo List to keep track of task and should be dictionary
-# Ex: [{"task_id": 1, "title": "AUC CLass", "priority": "High", "status": "To Do", "description": "Python Class" }]
+# Ex: [{"task_id": 1, "title": "AUC CLass", "priority": "High", "status": "To Do" }]
 # Task_id => Number
 # Title => String
 # Priority => String ("High" / "Medium" / "Low")
@@ -27,8 +27,9 @@ class TaskManager:
         self.tasks.append(task)
         self._next_id += 1
 
-    def get_tasks(self):
-        return self.tasks
+    def get_tasks_by_status(self, status):
+        print(self.tasks,'statusss')
+        return [task for task in self.tasks if task["status"].lower() == status.lower()]
 
     def clear_tasks(self):
         self.tasks.clear()

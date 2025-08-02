@@ -8,7 +8,6 @@ def test_add_task():
         "title": "Go to the AUC",
         "priority": "High",
         "status": "To Do",
-        "description": "Python Class"
     }
 
     tm.add_task(task_input)

@@ -16,6 +16,6 @@ def test_add_task():
         "id": 1,
         **task_input
     }
-    print("Actual task:", tm.get_tasks()[0])
+    print("Actual task:", tm.get_tasks_by_status('To Do')[0])
     print("Expected task:", expected)
-    assert tm.get_tasks()[0] == expected
+    assert tm.get_tasks_by_status('To Do')[0] == expected

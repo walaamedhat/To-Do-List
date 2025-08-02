@@ -15,11 +15,19 @@ class TaskManager:
 
     # ToDo => Function to validate task, task will be a dictionary
     def validation(self, task_input):
-        pass
+        for field in ["title", "priority", "status"]:
+
+            if field not in task_input:
+                raise ValueError(f"Missing required field: {field}")
+
+        if task_input["priority"] not in ["Low", "Medium", "High"]:
+            raise ValueError(f"Invalid priority: {task_input['priority']}. Must be one of ['Low', 'Medium', 'High']")
+
+        if task_input["status"] not in ["To Do", "In Progress", "Done"]:
+            raise ValueError(f"Invalid status: {task_input['status']}. Must be one of ['To Do', 'In Progress', 'Done']")
 
     # ToDo => Function to add a new task, task will be a dictionary
     def add_task(self, task_data):
-        # write your code here
         task = {
             "id": self._next_id,
             **task_data
@@ -38,8 +46,12 @@ class TaskManager:
     # ToDo => Function to remove a task by ID
     def remove_task(self, task_id):
         # write your code here
-        pass
-
+        for task in self.tasks:
+            if task["id"] == task_id:
+                self.tasks.remove(task)
+            print(f"Task with ID {task_id} has been removed successfully!")
+            return
+        raise ValueError(f"Task with ID {task_id} not found!.")
 
     # ToDo => Function to mark a task as completed
     def complete_task(self, task_id):

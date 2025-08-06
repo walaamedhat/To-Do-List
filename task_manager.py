@@ -68,18 +68,18 @@ class TaskManager:
 
     # ToDo => Function to edit a task
     def edit_task(self, task_id, field, new_value):
-        try:        
-            task = next((t for t in self.tasks if t["id"] == task_id), None)
-            if not task:
-                raise Exception("Task not found") # raise = throw
+        for task in self.tasks:
+            if task["id"] == task_id:
+                if field in task:
+                    task[field] = new_value  # Update the field
+                    print(f"field with id :{task_id} updated to {new_value}")
+                    break
+            else:
+                raise ValueError(f"Field '{field}' does not exist in the task.")
+        
+        else:
+            raise ValueError(f"task with id {task_id} not found")
 
-            if field not in task:
-                raise Exception("Field not found")
 
-            task[field] = new_value
-            print("Task updated successfully")
-
-        except Exception as e: #catch the error and store it in e
-            print("Error:", e) #print the message inside the error
     
     

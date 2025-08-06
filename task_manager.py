@@ -54,7 +54,6 @@ class TaskManager:
                 self.tasks.remove(task)
                 print(f"Task with ID {task_id} has been removed successfully!")
                 return True
-            return False
 
     # ToDo => Function to mark a task as completed
     def complete_task(self, task_id):

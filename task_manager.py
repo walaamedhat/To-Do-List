@@ -23,25 +23,28 @@ class TaskManager:
         if task_input["priority"] not in ["Low", "Medium", "High"]:
             raise ValueError(f"Invalid priority: {task_input['priority']}. Must be one of ['Low', 'Medium', 'High']")
 
-        if task_input["status"] not in ["To Do", "In Progress", "Done"]:
-            raise ValueError(f"Invalid status: {task_input['status']}. Must be one of ['To Do', 'In Progress', 'Done']")
+        if task_input["status"].title() not in ["Todo", "Doing", "Done"]:
+            raise ValueError(f"Invalid status: {task_input['status']}. Must be one of ['Todo', 'Doing', 'Done']")
+        return True
 
     # ToDo => Function to add a new task, task will be a dictionary
     def add_task(self, task_data):
-        task = {
-            "id": self._next_id,
-            **task_data
-        }
-        self.tasks.append(task)
-        self._next_id += 1
+        if self.validation(task_data):
+            task = {
+                "id": self._next_id,
+                **task_data
+            }
+            self.tasks.append(task)
+            self._next_id += 1
 
     def get_tasks_by_status(self, status):
-        print(self.tasks,'statusss')
-        return [task for task in self.tasks if task["status"].lower() == status.lower()]
+        tasks_by_status = []
 
-    def clear_tasks(self):
-        self.tasks.clear()
-        self._next_id = 1
+        for task in self.tasks:
+            if task["status"].lower() == status.lower():
+                tasks_by_status.append(task)
+
+        return tasks_by_status
 
     # ToDo => Function to remove a task by ID
     def remove_task(self, task_id):
@@ -49,37 +52,33 @@ class TaskManager:
         for task in self.tasks:
             if task["id"] == task_id:
                 self.tasks.remove(task)
-            print(f"Task with ID {task_id} has been removed successfully!")
-            return
-        raise ValueError(f"Task with ID {task_id} not found!.")
+                print(f"Task with ID {task_id} has been removed successfully!")
+                return True
+            return False
 
     # ToDo => Function to mark a task as completed
     def complete_task(self, task_id):
-        result = self.edit_task(task_id, 'status', 'Done') 
-        return result
-        
-
-
-    # ToDo => Function to list all tasks
-    def list_tasks(self):
         # write your code here
-        pass
+        result = self.edit_task(task_id, 'status', 'Done')
+        return result
 
+    # ToDo => Function to get task by id
+    def get_task(self, task_id):
+        for task in self.tasks:
+            if task["id"] == task_id:
+                return task
+        return None
 
     # ToDo => Function to edit a task
     def edit_task(self, task_id, field, new_value):
+        # write your code here
         for task in self.tasks:
             if task["id"] == task_id:
                 if field in task:
-                    task[field] = new_value  # Update the field
-                    print(f"field with id :{task_id} updated to {new_value}")
-                    break
-            else:
-                raise ValueError(f"Field '{field}' does not exist in the task.")
-        
-        else:
-            raise ValueError(f"task with id {task_id} not found")
-
-
-    
-    
+                    task[field] = new_value
+                    print(f"Task {task_id} updated: set {field} to {new_value}")
+                    return task
+                else:
+                    print(f"Field '{field}' does not exist in task {task_id}.")
+                    return None
+        return None

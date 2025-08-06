@@ -2,11 +2,15 @@
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
+
+BIG_ICON_FONT = ("Arial", 14, "bold")
 
 class TaskListUI:
     def __init__(self, root, task_manager):
         self.root = root
         self.task_manager = task_manager
+        self.task_widgets = {}
 
         self.root.title("KRW To-Do List")
         self.root.geometry("800x800")
@@ -49,6 +53,7 @@ class TaskListUI:
         return container
 
     def refresh_task_list(self):
+        print("refresh_task_list")
         for section in [self.todo_frame, self.doing_frame, self.done_frame]:
             for widget in section.winfo_children():
                 widget.destroy()
@@ -59,11 +64,9 @@ class TaskListUI:
 
     def add_tasks_to_section(self, status, section_frame):
         tasks = self.task_manager.get_tasks_by_status(status)
-
         for task in tasks:
             task_id = task["id"]
             title = task["title"]
-            completed = task["status"].lower() == "done"
 
             task_row = tk.Frame(section_frame, pady=3)
             task_row.pack(fill=tk.X, padx=5, pady=2)
@@ -71,7 +74,10 @@ class TaskListUI:
             label = tk.Label(task_row, text=title, anchor="w")
             label.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-            move_btn = ttk.Menubutton(task_row, text="⋯")
+            self.task_widgets[task_id] = {'frame': task_row, 'label': label, 'entry': None}
+
+            # move_btn
+            move_btn = ttk.Menubutton(task_row, text="status")
             menu = tk.Menu(move_btn, tearoff=0)
             for target_status in ["todo", "doing", "done"]:
                 if target_status != status:
@@ -80,8 +86,27 @@ class TaskListUI:
             move_btn["menu"] = menu
             move_btn.pack(side=tk.RIGHT, padx=2)
 
-            del_button = ttk.Button(task_row, text="✖", width=2, command=lambda tid=task_id: self.delete_task(tid))
+            # delete_btn
+            del_button = tk.Button(
+                task_row,
+                text="✖",
+                width=2,
+                font=BIG_ICON_FONT,
+                command=lambda tid=task_id: self.delete_task(tid),
+                fg="red",
+            )
             del_button.pack(side=tk.RIGHT, padx=2)
+
+            # edit_btn
+            edit_button = tk.Button(
+                task_row,
+                text="✎",
+                width=2,
+                font=BIG_ICON_FONT,
+                command=lambda tid=task_id: self.edit_task(tid),
+                fg="blue"
+            )
+            edit_button.pack(side=tk.RIGHT, padx=2)
 
     def add_task(self):
         title = self.task_entry.get().strip()
@@ -94,12 +119,84 @@ class TaskListUI:
             })
             self.task_entry.delete(0, tk.END)
             self.refresh_task_list()
+        else:
+            messagebox.showwarning(title="Input Error", message="Please enter a task title.")
+            self.task_entry.delete(0, tk.END)
 
     def delete_task(self, task_id):
         print(task_id, 'remove id')
-        self.task_manager.remove_task(task_id)
-        self.refresh_task_list()
+        result = self.task_manager.remove_task(task_id)
+        if result:
+            self.refresh_task_list()
+            messagebox.showinfo("Success", f"Your task deleted successfully!")
 
     def move_task(self, task_id, new_status):
-        self.task_manager.change_status(task_id, new_status)
+        print(task_id, 'move status', new_status)
+        if new_status == 'done': self.task_manager.complete_task(task_id)
+        else: self.task_manager.edit_task(task_id, 'status', new_status)
         self.refresh_task_list()
+
+    def edit_task(self, task_id):
+        widgets = self.task_widgets.get(task_id)
+        if not widgets:
+            print('no widgets 11')
+            return
+
+        label = widgets.get('label')
+        if label is not None:
+            label.destroy()
+        else:
+            # Label is already gone — maybe editing is already active
+            print('Label is already gone — maybe editing is already active')
+            return
+        task = self.task_manager.get_task(task_id)
+        if not task:
+            print('Task does not exist')
+            return
+
+        task_row = widgets['frame']
+        label = widgets['label']
+
+        # Remove the label
+        label.destroy()
+
+        # Create an Entry widget in the same frame
+        entry = tk.Entry(task_row)
+        entry.insert(0, task["title"])
+        entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        # Store the entry widget reference
+        self.task_widgets[task_id]['entry'] = entry
+        self.task_widgets[task_id]['label'] = None
+
+        # Focus on the Entry
+        entry.focus_set()
+
+        # Bind Enter key to save
+        entry.bind("<Return>", lambda event: self.save_task(task_id))
+
+    def save_task(self, task_id):
+        widgets = self.task_widgets.get(task_id)
+        if not widgets:
+            return
+
+        entry = widgets.get('entry')
+        if not entry:
+            return
+
+        new_title = entry.get().strip()
+        if not new_title:
+            messagebox.showwarning("Input Error", "Task title cannot be empty.")
+            entry.focus_set()
+            return
+
+        # Update task in task manager
+        self.task_manager.edit_task(task_id, 'title', new_title)
+
+        # Remove Entry widget
+        entry.destroy()
+
+        # Refresh sections
+        self.refresh_task_list()
+
+        messagebox.showinfo("Success", f"Your task updated successfully!")

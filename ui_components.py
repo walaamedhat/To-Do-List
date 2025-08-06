@@ -54,6 +54,7 @@ class TaskListUI:
 
     def refresh_task_list(self):
         print("refresh_task_list")
+        self.task_widgets.clear()
         for section in [self.todo_frame, self.doing_frame, self.done_frame]:
             for widget in section.winfo_children():
                 widget.destroy()
@@ -139,37 +140,36 @@ class TaskListUI:
     def edit_task(self, task_id):
         widgets = self.task_widgets.get(task_id)
         if not widgets:
-            print('no widgets 11')
+            print('No widgets found for task:', task_id)
+            return
+
+        # Prevent opening multiple edit boxes
+        if widgets.get('entry') is not None:
+            print('Already editing this task.')
             return
 
         label = widgets.get('label')
         if label is not None:
             label.destroy()
+            self.task_widgets[task_id]['label'] = None
         else:
-            # Label is already gone — maybe editing is already active
-            print('Label is already gone — maybe editing is already active')
+            print('Label already destroyed or not found.')
             return
+
         task = self.task_manager.get_task(task_id)
         if not task:
-            print('Task does not exist')
+            print('Task not found:', task_id)
             return
 
         task_row = widgets['frame']
-        label = widgets['label']
-
-        # Remove the label
-        label.destroy()
 
         # Create an Entry widget in the same frame
         entry = tk.Entry(task_row)
         entry.insert(0, task["title"])
         entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-        # Store the entry widget reference
         self.task_widgets[task_id]['entry'] = entry
-        self.task_widgets[task_id]['label'] = None
 
-        # Focus on the Entry
         entry.focus_set()
 
         # Bind Enter key to save

@@ -55,8 +55,9 @@ class TaskManager:
 
     # ToDo => Function to mark a task as completed
     def complete_task(self, task_id):
-        # write your code here
-        pass
+        result = self.edit_task(task_id, 'status', 'Done') 
+        return result
+        
 
 
     # ToDo => Function to list all tasks
@@ -67,5 +68,18 @@ class TaskManager:
 
     # ToDo => Function to edit a task
     def edit_task(self, task_id, field, new_value):
-        # write your code here
-        pass
+        for task in self.tasks:
+            if task["id"] == task_id:
+                if field in task:
+                    task[field] = new_value  # Update the field
+                    print(f"field with id :{task_id} updated to {new_value}")
+                    break
+            else:
+                raise ValueError(f"Field '{field}' does not exist in the task.")
+        
+        else:
+            raise ValueError(f"task with id {task_id} not found")
+
+
+    
+    

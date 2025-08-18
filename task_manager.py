@@ -1,10 +1,11 @@
 # task_manager.py
 
 # ToDo List to keep track of task and should be a dictionary
-# Ex: [{"task_id": 1, "title": "AUC Class", "status": "To Do" }]
+# Ex: [{"task_id": 1, "title": "AUC Class", "status": "To Do", "priority": "High" }]
 # Task_id => Number
 # Title => String
 # Status => String ("To Do" / "Doing" / "Done")
+# Priority => String ("High" / "Medium" / "Low")
 
 class TaskManager:
     def __init__(self):
@@ -13,12 +14,19 @@ class TaskManager:
 
     # Function to validate task, task will be a dictionary
     def validation(self, task_input):
-        for field in ["title", "status"]:
+        for field in ["title", "status", "priority"]:
             if field not in task_input:
                 raise ValueError(f"Missing required field: {field}")
 
-        if task_input["status"].title() not in ["Todo", "Doing", "Done"]:
-            raise ValueError(f"Invalid status: {task_input['status']}. Must be one of ['Todo', 'Doing', 'Done']")
+        valid_statuses = ["Todo", "Doing", "Done"]
+        valid_priorities = ["Low", "Medium", "High"]
+
+        if task_input["status"].title() not in valid_statuses:
+            raise ValueError(f"Invalid status: {task_input['status']}. Must be one of {valid_statuses}")
+
+        if task_input["priority"].title() not in valid_priorities:
+            raise ValueError(f"Invalid priority: {task_input['priority']}. Must be one of {valid_priorities}")
+
         return True
 
     # Function to add a new task, task will be a dictionary

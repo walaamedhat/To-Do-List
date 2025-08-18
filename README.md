@@ -35,12 +35,14 @@ Key features of the application:
 ### Steps:
 
 1. **Clone the repository:**
-   - HTTPS
+   - **HTTPS**
+     
    ```bash
    git clone https://github.com/walaamedhat/To-Do-List.git
    cd To-Do-List
    ```
-   - SSH
+   - **SSH**
+     
    ```bash
    git clone git@github.com:walaamedhat/To-Do-List.git
    cd To-Do-List

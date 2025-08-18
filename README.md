@@ -35,12 +35,17 @@ Key features of the application:
 ### Steps:
 
 1. **Clone the repository:**
-
+   - HTTPS
    ```bash
    git clone https://github.com/walaamedhat/To-Do-List.git
    cd To-Do-List
    ```
-
+   - SSH
+     ```bash
+      git clone git@github.com:walaamedhat/To-Do-List.git
+      cd To-Do-List
+      ```
+     
 2. **Install dependencies:**
 
    - **Tkinter** is usually included with Python, but if you need to install it manually:

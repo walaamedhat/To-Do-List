@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-BIG_ICON_FONT = ("Arial", 14, "bold")
+ICON_FONT = ("Arial", 10, "bold")
 
 class TaskListUI:
     def __init__(self, root, task_manager):
@@ -116,7 +116,7 @@ class TaskListUI:
                 task_row,
                 text="✖",
                 width=2,
-                font=BIG_ICON_FONT,
+                font=ICON_FONT,
                 command=lambda tid=task_id: self.delete_task(tid),
                 fg="red",
             )
@@ -127,7 +127,7 @@ class TaskListUI:
                 task_row,
                 text="✎",
                 width=2,
-                font=BIG_ICON_FONT,
+                font=ICON_FONT,
                 command=lambda tid=task_id: self.edit_task(tid),
                 fg="blue"
             )

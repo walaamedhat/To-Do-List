@@ -41,10 +41,10 @@ Key features of the application:
    cd To-Do-List
    ```
    - SSH
-     ```bash
-      git clone git@github.com:walaamedhat/To-Do-List.git
-      cd To-Do-List
-      ```
+   ```bash
+   git clone git@github.com:walaamedhat/To-Do-List.git
+   cd To-Do-List
+   ```
      
 2. **Install dependencies:**
 

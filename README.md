@@ -107,7 +107,7 @@ Key features of the application:
 ## File Structure
 
 ```
-KRW-ToDo-App/
+To-Do-List/
 ├── main.py                # App entry point
 ├── task_manager.py        # Logic for managing tasks (TaskManager class)
 ├── ui_components.py       # Tkinter GUI code (TaskListUI class)
